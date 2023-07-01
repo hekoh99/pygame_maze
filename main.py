@@ -43,6 +43,15 @@ DOOR_OPENED = pygame.transform.scale(DOOR_OPENED, (60, 60))
 ## SOUND
 END_SOUND = pygame.mixer.Sound("birthday_background.mp3")
 
+## 게임 문구
+# GAME_FONT = pygame.font.Font( None, 15)
+# CLICK_GUIDE = GAME_FONT.render("Click  Items", True, WHITE)
+CLICK_GUIDE = pygame.image.load("guide_text.png")
+CLICK_GUIDE = pygame.transform.scale(CLICK_GUIDE, (350, 100))
+
+HAPPY_BIRTHDAY = pygame.image.load("happy_birthday_text.png")
+HAPPY_BIRTHDAY = pygame.transform.scale(HAPPY_BIRTHDAY, (450, 200))
+
 ## 게임 상태 flag
 ## 게임 시작 전 : 0
 ## 게임 중 : 1
@@ -115,6 +124,8 @@ class Game:
             self.gameDisplay.blit(ITEM, (340, 50))
             self.gameDisplay.blit(ITEM, (440, 50))
             self.gameDisplay.blit(ITEM, (540, 50))
+            self.gameDisplay.blit(CLICK_GUIDE, (WIDTH/2 - 180, 20))
+            self.gameDisplay.blit(HAPPY_BIRTHDAY, (WIDTH/2 - 230, HEIGHT / 6))
             self.gameDisplay.blit(self.player.playerImg, (WIDTH/2 - 25, HEIGHT * 2/3))
 
     def movePlayer(self, posX, posY):
@@ -156,7 +167,6 @@ def getMap(file):
 
 def getClickedItem():
     mouse_pos = pygame.mouse.get_pos()
-    print(mouse_pos)
     if mouse_pos[0] >= 50 and mouse_pos[0] <= 80 :
         if mouse_pos[1] >= 55 and mouse_pos[1] <= 90 :
             return 1
