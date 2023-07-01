@@ -39,6 +39,9 @@ DOOR_OPENED = pygame.transform.scale(DOOR_OPENED, (60, 60))
 # PLAYER = pygame.image.load("player.png")
 # PLAYER = pygame.transform.scale(PLAYER, (50, 50))
 
+## SOUND
+END_SOUND = pygame.mixer.Sound("birthday_background.mp3")
+
 class Player:
     posX = 0
     posY = 0
@@ -99,6 +102,10 @@ class Game:
             self.player.placePlayer()
         else :
             self.gameDisplay.fill(BLACK)
+            GameDisplay.blit(self.player.playerImg, (WIDTH/2 - 25, HEIGHT/2))
+            # 살짝 sleep 주기
+
+
 
     def movePlayer(self, posX, posY):
         nxtPosX = self.player.posX + posX
@@ -112,6 +119,7 @@ class Game:
             self.map[nxtPosY][nxtPosX] = '0'
         if self.map[nxtPosY][nxtPosX] == 'E' and self.allCollected:
             self.completed = True
+            END_SOUND.play()
 
 
 def parseMap(map):
