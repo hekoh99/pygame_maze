@@ -62,71 +62,57 @@ class Game:
     map = []
     player = None
     gameDisplay = None
+    collected = 0
+    allCollected = False
+    completed = False
 
     def __init__(self, player, map, gameDisplay):
         self.map = map
         self.player = player
         self.gameDisplay = gameDisplay
+        self.collected = 0
+        self.allCollected = False
+        self.completed = False
 
     def drawMap(self):
-        posY = 0
-        for i in map:
-            posX = 0
-            for j in i:
-                if j == '\n':
-                    continue
-                if j == '1':
-                    self.gameDisplay.blit(WALL, (posX * 50, posY * 50))
-                else : 
-                    self.gameDisplay.blit(FLOOR, (posX * 50, posY * 50))
+        if self.completed == False:
+            posY = 0
+            door = DOOR_CLOSED
+            if self.allCollected:
+                door = DOOR_OPENED
+            for i in map:
+                posX = 0
+                for j in i:
+                    if j == '\n':
+                        continue
+                    if j == '1':
+                        self.gameDisplay.blit(WALL, (posX * 50, posY * 50))
+                    else : 
+                        self.gameDisplay.blit(FLOOR, (posX * 50, posY * 50))
 
-                if j == 'C':
-                    self.gameDisplay.blit(ITEM, (posX * 50, posY * 50))
-                elif j == 'E':
-                    self.gameDisplay.blit(DOOR_OPENED, (posX * 50, posY * 50))
-                posX += 1
-            posY += 1
-        self.player.placePlayer()
+                    if j == 'C':
+                        self.gameDisplay.blit(ITEM, (posX * 50, posY * 50))
+                    elif j == 'E':
+                        self.gameDisplay.blit(door, (posX * 50, posY * 50))
+                    posX += 1
+                posY += 1
+            self.player.placePlayer()
+        else :
+            self.gameDisplay.fill(BLACK)
 
     def movePlayer(self, posX, posY):
         nxtPosX = self.player.posX + posX
         nxtPosY = self.player.posY + posY
         if self.map[nxtPosY][nxtPosX] != '1':
             self.player.move(posX, posY)
+        if self.map[nxtPosY][nxtPosX] == 'C':
+            self.collected += 1
+            if self.collected == 1:
+                self.allCollected = True
+            self.map[nxtPosY][nxtPosX] = '0'
+        if self.map[nxtPosY][nxtPosX] == 'E' and self.allCollected:
+            self.completed = True
 
-## 선(line) 및 도형 그리기 ##
-# 파라미터 설명
-# pygame.draw.shape(surface, color, pointlist(centerpoint), width)
-# surface: 어느 게임 창에 위치시킬 것인지 설정
-# color: 오브젝트 색상 설정
-# pointlist: 튜플형식으로 각 포인트(각)의 좌표를 설정
-# start_point, end_point, centerpoint: 시작 좌표, 끝점, 가운데 좌표
-# width: 도형 테두리 굵기 지정
-"""
-# 선
-pygame.draw.line(surface, color, start_point, end_point, width)
-pygame.draw.lines(surface, color, closed, pointlist, width)
-
-# 면
-pygame.draw.polygon(surface, color, pointlist, width)
-
-# 원
-pygame.draw.circle(surface, color, center_point, radius, width)
-
-# 타원
-pygame.draw.ellipse(surface, color, bounding_rectangle, width)
-
-# 직사각형
-pygame.draw.rect(surface, color, rectangle_tuple, width)
-#rectangle_tuple은 (사각형시작x좌표,사각형시작y좌표,가로길이,세로길이) 의 튜플로 이루어져 있음
-"""
-#도형 예제
-# pygame.draw.circle(GameDisplay,BLACK,(100,50),30)
-# pygame.draw.line(GameDisplay,BLUE,(200,20),(180,60))
-# pygame.draw.line(GameDisplay,BLUE,(200,20),(220,60))
-# pygame.draw.line(GameDisplay,BLUE,(180,60),(220,60))
-# pygame.draw.rect(GameDisplay,RED,(300,20,50,50),2)
-# pygame.draw.ellipse(GameDisplay,GREEN,(400,20,80,50),2)
 
 def parseMap(map):
     for i in range(len(map)):
@@ -136,10 +122,16 @@ def parseMap(map):
 
 def getMap(file):
     map = open(file, 'r')
-    ret = map.readlines()
+    mapInStr = map.readlines()
+    ret = []
+    for i in mapInStr:
+        line = []
+        for j in i:
+            if (j != '\n'):
+                line.append(j)
+        ret.append(line)
     map.close()
     return ret
-
 
 if __name__ == "__main__":
     ## 게임 창 설정 ##
@@ -158,9 +150,7 @@ if __name__ == "__main__":
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
-                print("keydown")
                 if event.key == pygame.K_UP:
-                    print("up key")
                     game.movePlayer(0, 1)
                 if event.key == pygame.K_RIGHT:
                     game.movePlayer(1, 0)
@@ -168,4 +158,4 @@ if __name__ == "__main__":
                     game.movePlayer(-1, 0)
                 if event.key == pygame.K_DOWN:
                     game.movePlayer(0, -1)
-        game.drawMap() 
+        game.drawMap()
