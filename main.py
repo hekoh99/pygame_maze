@@ -18,8 +18,8 @@ BLACK = (0,0,0)
 WHITE = (255,255,255)
 
 ## 화면 사이즈
-WIDTH = 640
-HEIGHT = 440
+WIDTH = 1000
+HEIGHT = 600
 
 # 게임 화면
 WALL = pygame.image.load("wall.png")
@@ -58,8 +58,23 @@ HAPPY_BIRTHDAY = pygame.transform.scale(HAPPY_BIRTHDAY, (450, 200))
 ## 게임 성공 후 : 2
 gameFlag = 0
 
-# 선물 상자 상태
+# 선물 상자 이벤트
 clickedItemNum = 0
+SUNSET = pygame.image.load("sunset.png")
+SUNSET = pygame.transform.scale(SUNSET, (126 * 3, 95 * 3))
+
+CAKE = pygame.image.load("cake.png")
+CAKE = pygame.transform.scale(CAKE, (1004 /3, 741 /3))
+
+SMILE = pygame.image.load("happyFace.png")
+SMILE = pygame.transform.scale(SMILE, (53 * 5, 78 * 5))
+
+BYE = pygame.image.load("bye.png")
+BYE = pygame.transform.scale(BYE, (842 / 2, 1112 / 2))
+
+LAY = pygame.image.load("laydown.png")
+LAY = pygame.transform.scale(LAY, (1146 / 2, 774 / 2))
+
 
 class Player:
     posX = 0
@@ -132,7 +147,17 @@ class Game:
             self.gameDisplay.blit(self.player.playerImg, (WIDTH/2 - 25, HEIGHT * 2/3))
             # 선물 상자 클릭에 대한 이벤트
             if clickedItemNum == 1:
-                self.gameDisplay.blit(DOOR_OPENED, (200, 200))
+                self.gameDisplay.blit(CAKE, (WIDTH / 2 - (126 * 3 / 2), 130))
+            elif clickedItemNum == 2:
+                self.gameDisplay.blit(SMILE, (WIDTH / 2 - (126 * 3 / 2), 130))
+            elif clickedItemNum == 3:
+                self.gameDisplay.blit(LAY, (WIDTH / 2 - (126 * 3 / 2), 130))
+            elif clickedItemNum == 4:
+                self.gameDisplay.blit(SUNSET, (WIDTH / 2 - (126 * 3 / 2), 130))
+            elif clickedItemNum == 5:
+                self.gameDisplay.blit(BYE, (WIDTH / 2 - (126 * 3 / 2), 130))
+            elif clickedItemNum == 6:
+                self.gameDisplay.blit(BYE, (WIDTH / 2 - (126 * 3 / 2), 130))
 
     def movePlayer(self, posX, posY):
         nxtPosX = self.player.posX + posX
