@@ -41,9 +41,9 @@ DOOR_OPENED = pygame.transform.scale(DOOR_OPENED, (60, 60))
 # PLAYER = pygame.transform.scale(PLAYER, (50, 50))
 
 ## SOUND
-END_SOUND = pygame.mixer.Sound("res/sound/birthday_background.mp3")
-GUIDE_VOICE = pygame.mixer.Sound("res/sound/Guide_voice.mp3")
-DOOR_SOUND = pygame.mixer.Sound("res/sound/doorOpen.mp3")
+END_SOUND = pygame.mixer.Sound("res/sounds/birthday_background.mp3")
+GUIDE_VOICE = pygame.mixer.Sound("res/sounds/Guide_voice.mp3")
+DOOR_SOUND = pygame.mixer.Sound("res/sounds/doorOpen.mp3")
 
 ## 게임 문구
 # GAME_FONT = pygame.font.Font( None, 15)
