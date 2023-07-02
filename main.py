@@ -22,34 +22,36 @@ WIDTH = 1000
 HEIGHT = 600
 
 # 게임 화면
-WALL = pygame.image.load("wall.png")
+WALL = pygame.image.load("res/img/wall.png")
 WALL = pygame.transform.scale(WALL, (50, 50))
 
-FLOOR = pygame.image.load("floor.png")
+FLOOR = pygame.image.load("res/img/floor.png")
 FLOOR = pygame.transform.scale(FLOOR, (50, 50))
 
-ITEM = pygame.image.load("present.png")
+ITEM = pygame.image.load("res/img/present.png")
 ITEM = pygame.transform.scale(ITEM, (50, 50))
 
-DOOR_CLOSED = pygame.image.load("closed.png")
+DOOR_CLOSED = pygame.image.load("res/img/closed.png")
 DOOR_CLOSED = pygame.transform.scale(DOOR_CLOSED, (60, 60))
 
-DOOR_OPENED = pygame.image.load("opened.png")
+DOOR_OPENED = pygame.image.load("res/img/opened.png")
 DOOR_OPENED = pygame.transform.scale(DOOR_OPENED, (60, 60))
 
 # PLAYER = pygame.image.load("player.png")
 # PLAYER = pygame.transform.scale(PLAYER, (50, 50))
 
 ## SOUND
-END_SOUND = pygame.mixer.Sound("birthday_background.mp3")
+END_SOUND = pygame.mixer.Sound("res/sound/birthday_background.mp3")
+GUIDE_VOICE = pygame.mixer.Sound("res/sound/Guide_voice.mp3")
+DOOR_SOUND = pygame.mixer.Sound("res/sound/doorOpen.mp3")
 
 ## 게임 문구
 # GAME_FONT = pygame.font.Font( None, 15)
 # CLICK_GUIDE = GAME_FONT.render("Click  Items", True, WHITE)
-CLICK_GUIDE = pygame.image.load("guide_text.png")
+CLICK_GUIDE = pygame.image.load("res/img/guide_text.png")
 CLICK_GUIDE = pygame.transform.scale(CLICK_GUIDE, (380, 120))
 
-HAPPY_BIRTHDAY = pygame.image.load("happy_birthday_text.png")
+HAPPY_BIRTHDAY = pygame.image.load("res/img/happy_birthday_text.png")
 HAPPY_BIRTHDAY = pygame.transform.scale(HAPPY_BIRTHDAY, (450, 200))
 
 ## 게임 상태 flag
@@ -60,26 +62,26 @@ gameFlag = 0
 
 # 선물 상자 이벤트
 clickedItemNum = 0
-SUNSET = pygame.image.load("sunset.png")
+SUNSET = pygame.image.load("res/img/sunset.png")
 SUNSET = pygame.transform.scale(SUNSET, (126 * 4, 95 * 4))
 
-CAKE = pygame.image.load("cake.png")
+CAKE = pygame.image.load("res/img/cake.png")
 CAKE = pygame.transform.scale(CAKE, (1004 / 2, 741 / 2))
 
-SMILE = pygame.image.load("happyFace.png")
+SMILE = pygame.image.load("res/img/happyFace.png")
 SMILE = pygame.transform.scale(SMILE, (53 * 5, 78 * 5))
 
-BYE = pygame.image.load("bye.png")
+BYE = pygame.image.load("res/img/bye.png")
 BYE = pygame.transform.scale(BYE, (842 / 3, 1112 / 3))
 
-LAY = pygame.image.load("laydown.png")
+LAY = pygame.image.load("res/img/laydown.png")
 LAY = pygame.transform.scale(LAY, (1146 / 2, 774 / 2))
 
 
 class Player:
     posX = 0
     posY = 0
-    playerImg = pygame.image.load("player.png")
+    playerImg = pygame.image.load("res/img/player.png")
 
     def __init__(self, posX, posY, img):
         self.posX = posX
@@ -162,12 +164,16 @@ class Game:
     def movePlayer(self, posX, posY):
         nxtPosX = self.player.posX + posX
         nxtPosY = self.player.posY + posY
-        if self.map[nxtPosY][nxtPosX] != '1':
+        if self.map[nxtPosY][nxtPosX] == '0' or self.map[nxtPosY][nxtPosX] == 'C' or self.map[nxtPosY][nxtPosX] == 'P' or (self.map[nxtPosY][nxtPosX] == 'E' and self.allCollected):
             self.player.move(posX, posY)
+        if self.allCollected == False and self.map[nxtPosY][nxtPosX] == 'E':
+            GUIDE_VOICE.play()
         if self.map[nxtPosY][nxtPosX] == 'C':
             self.collected += 1
             if self.collected == 5:
                 self.allCollected = True
+                DOOR_SOUND.play()
+                DOOR_SOUND.fadeout(1000)
             self.map[nxtPosY][nxtPosX] = '0'
         if self.map[nxtPosY][nxtPosX] == 'E' and self.allCollected:
             self.completed = True
@@ -218,13 +224,13 @@ def getClickedItem():
 if __name__ == "__main__":
     ## 게임 창 설정 ##
     gameFlag = 1
-    map = getMap("easy.map")
+    map = getMap("res/map/happy_birthday.map")
     GameDisplay = pygame.display.set_mode((WIDTH,HEIGHT))
     GameDisplay.fill(WHITE)
     i, j = parseMap(map)
-    player = Player(j, i, "player.png")
+    player = Player(j, i, "res/img/player.png")
     game = Game(player, map, GameDisplay)
-    pygame.display.set_caption("PYGAME Example") # 창 이름 설정
+    pygame.display.set_caption("Happy Birthday Minhyoung") # 창 이름 설정
     while True :
         FramePerSec.tick(FPS)
         pygame.display.update()
