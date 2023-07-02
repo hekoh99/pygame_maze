@@ -47,7 +47,7 @@ END_SOUND = pygame.mixer.Sound("birthday_background.mp3")
 # GAME_FONT = pygame.font.Font( None, 15)
 # CLICK_GUIDE = GAME_FONT.render("Click  Items", True, WHITE)
 CLICK_GUIDE = pygame.image.load("guide_text.png")
-CLICK_GUIDE = pygame.transform.scale(CLICK_GUIDE, (350, 100))
+CLICK_GUIDE = pygame.transform.scale(CLICK_GUIDE, (380, 120))
 
 HAPPY_BIRTHDAY = pygame.image.load("happy_birthday_text.png")
 HAPPY_BIRTHDAY = pygame.transform.scale(HAPPY_BIRTHDAY, (450, 200))
@@ -61,16 +61,16 @@ gameFlag = 0
 # 선물 상자 이벤트
 clickedItemNum = 0
 SUNSET = pygame.image.load("sunset.png")
-SUNSET = pygame.transform.scale(SUNSET, (126 * 3, 95 * 3))
+SUNSET = pygame.transform.scale(SUNSET, (126 * 4, 95 * 4))
 
 CAKE = pygame.image.load("cake.png")
-CAKE = pygame.transform.scale(CAKE, (1004 /3, 741 /3))
+CAKE = pygame.transform.scale(CAKE, (1004 / 2, 741 / 2))
 
 SMILE = pygame.image.load("happyFace.png")
 SMILE = pygame.transform.scale(SMILE, (53 * 5, 78 * 5))
 
 BYE = pygame.image.load("bye.png")
-BYE = pygame.transform.scale(BYE, (842 / 2, 1112 / 2))
+BYE = pygame.transform.scale(BYE, (842 / 3, 1112 / 3))
 
 LAY = pygame.image.load("laydown.png")
 LAY = pygame.transform.scale(LAY, (1146 / 2, 774 / 2))
@@ -136,28 +136,28 @@ class Game:
             self.player.placePlayer()
         else :
             self.gameDisplay.fill(BLACK)
-            self.gameDisplay.blit(ITEM, (40, 50))
-            self.gameDisplay.blit(ITEM, (140, 50))
-            self.gameDisplay.blit(ITEM, (240, 50))
-            self.gameDisplay.blit(ITEM, (340, 50))
-            self.gameDisplay.blit(ITEM, (440, 50))
-            self.gameDisplay.blit(ITEM, (540, 50))
-            self.gameDisplay.blit(CLICK_GUIDE, (WIDTH/2 - 180, 20))
-            self.gameDisplay.blit(HAPPY_BIRTHDAY, (WIDTH/2 - 230, HEIGHT / 6))
+            ITEM_DONE = pygame.transform.scale(ITEM, (70, 70))
+            init = 165
+            self.gameDisplay.blit(ITEM_DONE, (init, 50))
+            self.gameDisplay.blit(ITEM_DONE, (init + 150, 50))
+            self.gameDisplay.blit(ITEM_DONE, (init + 150 * 2, 50))
+            self.gameDisplay.blit(ITEM_DONE, (init + 150 * 3, 50))
+            self.gameDisplay.blit(ITEM_DONE, (init + 150 * 4, 50))
+            self.gameDisplay.blit(CLICK_GUIDE, (WIDTH/2 - 190, 15))
+            self.gameDisplay.blit(HAPPY_BIRTHDAY, (WIDTH/2 - 230, HEIGHT / 4))
             self.gameDisplay.blit(self.player.playerImg, (WIDTH/2 - 25, HEIGHT * 2/3))
             # 선물 상자 클릭에 대한 이벤트
             if clickedItemNum == 1:
-                self.gameDisplay.blit(CAKE, (WIDTH / 2 - (126 * 3 / 2), 130))
+                self.gameDisplay.blit(CAKE, (WIDTH / 2 - (1004 / 4), 150))
             elif clickedItemNum == 2:
-                self.gameDisplay.blit(SMILE, (WIDTH / 2 - (126 * 3 / 2), 130))
+                self.gameDisplay.blit(SMILE, (WIDTH / 2 - (53 * 5 / 2), 150))
             elif clickedItemNum == 3:
-                self.gameDisplay.blit(LAY, (WIDTH / 2 - (126 * 3 / 2), 130))
+                self.gameDisplay.blit(LAY, (WIDTH / 2 - (1146 / 4), 150))
             elif clickedItemNum == 4:
-                self.gameDisplay.blit(SUNSET, (WIDTH / 2 - (126 * 3 / 2), 130))
+                self.gameDisplay.blit(SUNSET, (WIDTH / 2 - (126 * 4 / 2), 150))
             elif clickedItemNum == 5:
-                self.gameDisplay.blit(BYE, (WIDTH / 2 - (126 * 3 / 2), 130))
-            elif clickedItemNum == 6:
-                self.gameDisplay.blit(BYE, (WIDTH / 2 - (126 * 3 / 2), 130))
+                self.gameDisplay.blit(BYE, (WIDTH / 2 - (842 / 6), 150))
+
 
     def movePlayer(self, posX, posY):
         nxtPosX = self.player.posX + posX
@@ -166,7 +166,7 @@ class Game:
             self.player.move(posX, posY)
         if self.map[nxtPosY][nxtPosX] == 'C':
             self.collected += 1
-            if self.collected == 1:
+            if self.collected == 5:
                 self.allCollected = True
             self.map[nxtPosY][nxtPosX] = '0'
         if self.map[nxtPosY][nxtPosX] == 'E' and self.allCollected:
@@ -198,24 +198,21 @@ def getMap(file):
 
 def getClickedItem():
     mouse_pos = pygame.mouse.get_pos()
-    if mouse_pos[0] >= 50 and mouse_pos[0] <= 80 :
-        if mouse_pos[1] >= 55 and mouse_pos[1] <= 90 :
+    if mouse_pos[0] >= 175 and mouse_pos[0] <= 225 :
+        if mouse_pos[1] >= 60 and mouse_pos[1] <= 110 :
             return 1
-    if mouse_pos[0] >= 150 and mouse_pos[0] <= 180 :
-        if mouse_pos[1] >= 55 and mouse_pos[1] <= 90 :
+    if mouse_pos[0] >= 328 and mouse_pos[0] <= 375 :
+        if mouse_pos[1] >= 60 and mouse_pos[1] <= 110 :
             return 2
-    if mouse_pos[0] >= 250 and mouse_pos[0] <= 280 :
-        if mouse_pos[1] >= 55 and mouse_pos[1] <= 90 :
+    if mouse_pos[0] >= 478 and mouse_pos[0] <= 525 :
+        if mouse_pos[1] >= 60 and mouse_pos[1] <= 110 :
             return 3
-    if mouse_pos[0] >= 350 and mouse_pos[0] <= 380 :
-        if mouse_pos[1] >= 55 and mouse_pos[1] <= 90 :
+    if mouse_pos[0] >= 628 and mouse_pos[0] <= 675 :
+        if mouse_pos[1] >= 60 and mouse_pos[1] <= 110 :
             return 4
-    if mouse_pos[0] >= 450 and mouse_pos[0] <= 480 :
-        if mouse_pos[1] >= 55 and mouse_pos[1] <= 90 :
+    if mouse_pos[0] >= 777 and mouse_pos[0] <= 824 :
+        if mouse_pos[1] >= 60 and mouse_pos[1] <= 110 :
             return 5
-    if mouse_pos[0] >= 550 and mouse_pos[0] <= 580 :
-        if mouse_pos[1] >= 55 and mouse_pos[1] <= 90 :
-            return 6
     return 0
 
 if __name__ == "__main__":
@@ -225,7 +222,7 @@ if __name__ == "__main__":
     GameDisplay = pygame.display.set_mode((WIDTH,HEIGHT))
     GameDisplay.fill(WHITE)
     i, j = parseMap(map)
-    player = Player(i, j, "player.png")
+    player = Player(j, i, "player.png")
     game = Game(player, map, GameDisplay)
     pygame.display.set_caption("PYGAME Example") # 창 이름 설정
     while True :
@@ -237,14 +234,13 @@ if __name__ == "__main__":
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
-                    game.movePlayer(0, 1)
+                    game.movePlayer(0, -1)
                 if event.key == pygame.K_RIGHT:
                     game.movePlayer(1, 0)
                 if event.key == pygame.K_LEFT:
                     game.movePlayer(-1, 0)
                 if event.key == pygame.K_DOWN:
-                    game.movePlayer(0, -1)
+                    game.movePlayer(0, 1)
             if event.type == pygame.MOUSEBUTTONDOWN and gameFlag == 2:
-                print(getClickedItem())
                 clickedItemNum = getClickedItem()
         game.drawMap()
