@@ -58,6 +58,9 @@ HAPPY_BIRTHDAY = pygame.transform.scale(HAPPY_BIRTHDAY, (450, 200))
 ## 게임 성공 후 : 2
 gameFlag = 0
 
+# 선물 상자 상태
+clickedItemNum = 0
+
 class Player:
     posX = 0
     posY = 0
@@ -127,6 +130,9 @@ class Game:
             self.gameDisplay.blit(CLICK_GUIDE, (WIDTH/2 - 180, 20))
             self.gameDisplay.blit(HAPPY_BIRTHDAY, (WIDTH/2 - 230, HEIGHT / 6))
             self.gameDisplay.blit(self.player.playerImg, (WIDTH/2 - 25, HEIGHT * 2/3))
+            # 선물 상자 클릭에 대한 이벤트
+            if clickedItemNum == 1:
+                self.gameDisplay.blit(DOOR_OPENED, (200, 200))
 
     def movePlayer(self, posX, posY):
         nxtPosX = self.player.posX + posX
@@ -215,4 +221,5 @@ if __name__ == "__main__":
                     game.movePlayer(0, -1)
             if event.type == pygame.MOUSEBUTTONDOWN and gameFlag == 2:
                 print(getClickedItem())
+                clickedItemNum = getClickedItem()
         game.drawMap()
